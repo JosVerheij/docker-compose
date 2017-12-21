@@ -13,8 +13,7 @@ services:
       - '8123:8123'
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
-      - '/Users/jos/projects/homeassistant/config:/config'
-      - 'ozwhassvol:/config/ozw'
+      - '/Users/jos/projects/home-assistant:/config'
     devices:
       - '/dev/ttyUSB0:/dev/zwave:rwm'
     depends_on:
@@ -22,6 +21,4 @@ services:
 
 volumes:
   dbhassvol:
-    driver: local
-  ozwhassvol:
     driver: local

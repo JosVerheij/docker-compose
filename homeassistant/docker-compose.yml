@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:alpine
+    restart: always
+    volumes:
+      - 'dbhassvol:/var/lib/postgresql/data'
+  hass:
+    image: 'homeassistant/home-assistant:latest'
+    restart: always
+    ports:
+      - '8123:8123'
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/Users/jos/projects/homeassistant/config:/config'
+      - 'ozwhassvol:/config/ozw'
+    devices:
+      - '/dev/ttyUSB0:/dev/zwave:rwm'
+    depends_on:
+      - db
+
+volumes:
+  dbhassvol:
+    driver: local
+  ozwhassvol:
+    driver: local

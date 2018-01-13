@@ -5,20 +5,39 @@ services:
     image: postgres:alpine
     restart: always
     volumes:
-      - 'dbhassvol:/var/lib/postgresql/data'
+      - dbhassvol:/var/lib/postgresql/data
+
+  influxdb:
+    image: influxdb:alpine
+    restart: always
+    volumes:
+      - influxdb:/var/lib/influxdb
+    networks:
+      default:
+      grafana_net:
+        aliases:
+          - influxdb-ha
+
   hass:
-    image: 'homeassistant/home-assistant:latest'
+    image: homeassistant/home-assistant:latest
     restart: always
     ports:
-      - '8123:8123'
+      - 8123:8123
     volumes:
-      - '/etc/localtime:/etc/localtime:ro'
-      - '/Users/jos/projects/home-assistant:/config'
+      - /etc/localtime:/etc/localtime:ro
+      - ${HOME}/projects/home-assistant:/config
     devices:
-      - '/dev/ttyUSB0:/dev/zwave:rwm'
+      - /dev/ttyUSB0:/dev/zwave:rwm
     depends_on:
       - db
+      - influxdb
 
 volumes:
   dbhassvol:
     driver: local
+  influxdb:
+    driver: local
+
+networks:
+  grafana_net:
+    external: true

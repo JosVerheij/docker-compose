@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  transmission:
+    image: linuxserver/transmission:latest
+    restart: always
+    ports:
+      - 9091:9091
+    environment:
+      TZ: "Europe/Amsterdam"
+    volumes:
+      - ${PWD}/transmission:/config
+      - /Volumes/SamsungS2/downloads:/downloads
+
+  jackett:
+    image: linuxserver/jackett:latest
+    restart: always
+    ports:
+      - 9117:9117
+    environment:
+      TZ: "Europe/Amsterdam"
+    volumes:
+      - ${PWD}/jackett:/config
+
+  sonarr:
+    image: linuxserver/sonarr:latest
+    restart: always
+    ports:
+      - 8989:8989
+    environment:
+      TZ: "Europe/Amsterdam"
+    volumes:
+      - ${PWD}/sonarr:/config
+      - /Volumes/SamsungS2/downloads/complete:/downloads
+      - /Volumes/SamsungS2/tv:/tv
+
+  radarr:
+    image: linuxserver/radarr:latest
+    restart: always
+    ports:
+      - 7878:7878
+    environment:
+      TZ: "Europe/Amsterdam"
+    volumes:
+      - ${PWD}/sonarr:/config
+      - /Volumes/SamsungS2/downloads/complete:/downloads
+      - /Volumes/SamsungS2/movies:/movies

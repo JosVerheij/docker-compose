@@ -42,6 +42,6 @@ services:
     environment:
       TZ: "Europe/Amsterdam"
     volumes:
-      - ${PWD}/sonarr:/config
+      - ${PWD}/radarr:/config
       - /Volumes/SamsungS2/downloads/complete:/downloads
       - /Volumes/SamsungS2/movies:/movies

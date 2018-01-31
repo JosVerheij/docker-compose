@@ -7,6 +7,8 @@ services:
   traefik:
     image: traefik:alpine
     restart: always
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
     ports:
       - 80:80
       - 443:443
@@ -14,6 +16,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${PWD}/traefik.toml:/traefik.toml
-      - ${PWD}/acme.json:/acme.json
+      - ${PWD}/acme.json:acme.json
     networks:
       - proxy

@@ -18,8 +18,6 @@ services:
   hass:
     image: homeassistant/home-assistant:latest
     restart: always
-    ports:
-      - 8123:8123
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${HOME}/projects/home-assistant:/config

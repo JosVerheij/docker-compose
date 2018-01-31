@@ -71,8 +71,8 @@ services:
     restart: always
     environment:
       TZ: "Europe/Amsterdam"
-      PGID: '50'
-      PUID: '1000'
+      PGID: 50
+      PUID: 1000
     labels:
       - traefik.backend=radarr
       - traefik.frontend.rule=Host:radarr.josverheij.nl

@@ -1,28 +1,48 @@
 version: '3'
 
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
+volumes:
+  sonarr:
+    driver: local
+  radarr:
+    driver: local
+
 services:
   transmission:
     image: linuxserver/transmission:latest
     restart: always
-    ports:
-      - 9091:9091
     environment:
       TZ: "Europe/Amsterdam"
+    labels:
+      - traefik.backend=transmission
+      - traefik.frontend.rule=Host:transmission.josverheij.nl
+      - traefik.docker.network=proxy
+      - traefik.port=9091
     networks:
-      - media
+      - internal
+      - proxy
     volumes:
       - ${PWD}/transmission:/config
-      - /mnt/usb/downloads:/downloads
+      - /Volumes/SamsungS2/downloads:/downloads
 
   jackett:
     image: linuxserver/jackett:latest
     restart: always
-    ports:
-      - 9117:9117
     environment:
       TZ: "Europe/Amsterdam"
+    labels:
+      - traefik.backend=jackett
+      - traefik.frontend.rule=Host:jackett.josverheij.nl
+      - traefik.docker.network=proxy
+      - traefik.port=9117
     networks:
-      - media
+      - internal
+      - proxy
     volumes:
       - ${PWD}/jackett:/config
 
@@ -36,11 +56,12 @@ services:
       PGID: 50
       PUID: 1000
     networks:
-      - media
+      - internal
+      - proxy
     volumes:
       - sonarr:/config
-      - /mnt/usb/downloads/complete:/downloads
-      - /mnt/usb/tv:/tv
+      - /Volumes/SamsungS2/downloads/complete:/downloads
+      - /Volumes/SamsungS2/tv:/tv
 
   radarr:
     image: linuxserver/radarr:latest
@@ -52,18 +73,9 @@ services:
       PGID: '50'
       PUID: '1000'
     networks:
-      - media
+      - internal
+      - proxy
     volumes:
       - radarr:/config
-      - /mnt/usb/downloads:/downloads
-      - /mnt/usb/movies:/movies
-
-volumes:
-  sonarr:
-    driver: local
-  radarr:
-    driver: local
-
-networks:
-  media:
-    driver: bridge
+      - /Volumes/SamsungS2/downloads:/downloads
+      - /Volumes/SamsungS2/movies:/movies

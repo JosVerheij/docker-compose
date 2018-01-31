@@ -1,22 +1,19 @@
 version: '3'
 
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
 services:
   db:
     image: postgres:alpine
     restart: always
+    networks:
+      - internal
     volumes:
       - dbhassvol:/var/lib/postgresql/data
-
-  influxdb:
-    image: influxdb:alpine
-    restart: always
-    volumes:
-      - influxdb:/var/lib/influxdb
-    networks:
-      default:
-      grafana_net:
-        aliases:
-          - influxdb-ha
 
   hass:
     image: homeassistant/home-assistant:latest
@@ -26,18 +23,19 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${HOME}/projects/home-assistant:/config
+    networks:
+      - internal
+      - proxy
+    labels:
+      - traefik.backend=hass
+      - traefik.frontend.rule=Host:hass.josverheij.nl
+      - traefik.docker.network=proxy
+      - traefik.port=8123
     devices:
       - /dev/ttyUSB0:/dev/zwave:rwm
     depends_on:
       - db
-      - influxdb
 
 volumes:
   dbhassvol:
     driver: local
-  influxdb:
-    driver: local
-
-networks:
-  grafana_net:
-    external: true

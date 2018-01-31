@@ -49,12 +49,15 @@ services:
   sonarr:
     image: linuxserver/sonarr:latest
     restart: always
-    ports:
-      - 8989:8989
     environment:
       TZ: "Europe/Amsterdam"
       PGID: 50
       PUID: 1000
+    labels:
+      - traefik.backend=sonarr
+      - traefik.frontend.rule=Host:sonarr.josverheij.nl
+      - traefik.docker.network=proxy
+      - traefik.port=8989
     networks:
       - internal
       - proxy
@@ -66,12 +69,15 @@ services:
   radarr:
     image: linuxserver/radarr:latest
     restart: always
-    ports:
-      - 7878:7878
     environment:
       TZ: "Europe/Amsterdam"
       PGID: '50'
       PUID: '1000'
+    labels:
+      - traefik.backend=radarr
+      - traefik.frontend.rule=Host:radarr.josverheij.nl
+      - traefik.docker.network=proxy
+      - traefik.port=7878
     networks:
       - internal
       - proxy

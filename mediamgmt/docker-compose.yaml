@@ -8,9 +8,11 @@ services:
       - 9091:9091
     environment:
       TZ: "Europe/Amsterdam"
+    networks:
+      - media
     volumes:
       - ${PWD}/transmission:/config
-      - /Volumes/SamsungS2/downloads:/downloads
+      - /mnt/usb/downloads:/downloads
 
   jackett:
     image: linuxserver/jackett:latest
@@ -19,6 +21,8 @@ services:
       - 9117:9117
     environment:
       TZ: "Europe/Amsterdam"
+    networks:
+      - media
     volumes:
       - ${PWD}/jackett:/config
 
@@ -29,10 +33,14 @@ services:
       - 8989:8989
     environment:
       TZ: "Europe/Amsterdam"
+      PGID: 50
+      PUID: 1000
+    networks:
+      - media
     volumes:
-      - ${PWD}/sonarr:/config
-      - /Volumes/SamsungS2/downloads/complete:/downloads
-      - /Volumes/SamsungS2/tv:/tv
+      - sonarr:/config
+      - /mnt/usb/downloads/complete:/downloads
+      - /mnt/usb/tv:/tv
 
   radarr:
     image: linuxserver/radarr:latest
@@ -41,7 +49,21 @@ services:
       - 7878:7878
     environment:
       TZ: "Europe/Amsterdam"
+      PGID: '50'
+      PUID: '1000'
+    networks:
+      - media
     volumes:
-      - ${PWD}/radarr:/config
-      - /Volumes/SamsungS2/downloads/complete:/downloads
-      - /Volumes/SamsungS2/movies:/movies
+      - radarr:/config
+      - /mnt/usb/downloads:/downloads
+      - /mnt/usb/movies:/movies
+
+volumes:
+  sonarr:
+    driver: local
+  radarr:
+    driver: local
+
+networks:
+  media:
+    driver: bridge

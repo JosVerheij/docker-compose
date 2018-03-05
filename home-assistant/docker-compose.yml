@@ -10,15 +10,14 @@ services:
   db:
     image: postgres:alpine
     restart: always
-    networks:
-      - internal
+    # networks:
+    #   - internal
     volumes:
       - dbhassvol:/var/lib/postgresql/data
 
   hass:
     image: homeassistant/home-assistant:latest
     restart: always
-    env_file: hass.env
     environment:
       - TZ="Europe/Amsterdam"
     volumes:

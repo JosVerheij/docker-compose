@@ -1,0 +1,87 @@
+version: '3'
+
+# networks:
+#   proxy:
+#     external: true
+#   internal:
+#     external: false
+
+volumes:
+  sonarr:
+    driver: local
+  radarr:
+    driver: local
+
+services:
+  transmission:
+    image: linuxserver/transmission:latest
+    restart: always
+    # environment:
+    #   TZ: "Europe/Amsterdam"
+    # labels:
+    #   - traefik.backend=transmission
+    #   - traefik.frontend.rule=Host:transmission.josverheij.nl
+    #   - traefik.docker.network=proxy
+    #   - traefik.port=9091
+    # networks:
+    #   - internal
+    #   - proxy
+    volumes:
+      - ${PWD}/transmission:/config
+      - ${DOWNLOAD_DIR}:/downloads
+
+  jackett:
+    image: linuxserver/jackett:latest
+    restart: always
+    environment:
+      TZ: "Europe/Amsterdam"
+    # labels:
+    #   - traefik.backend=jackett
+    #   - traefik.frontend.rule=Host:jackett.josverheij.nl
+    #   - traefik.docker.network=proxy
+    #   - traefik.port=9117
+    # networks:
+    #   - internal
+    #   - proxy
+    volumes:
+      - ${PWD}/jackett:/config
+
+  sonarr:
+    image: linuxserver/sonarr:latest
+    restart: always
+    environment:
+      TZ: "Europe/Amsterdam"
+    #   PGID: 50
+    #   PUID: 1000
+    # labels:
+    #   - traefik.backend=sonarr
+    #   - traefik.frontend.rule=Host:sonarr.josverheij.nl
+    #   - traefik.docker.network=proxy
+    #   - traefik.port=8989
+    # networks:
+    #   - internal
+    #   - proxy
+    volumes:
+      - sonarr:/config
+      - ${DOWNLOAD_DIR}/complete:/downloads
+      - /Volumes/SamsungS2/tv:/tv
+
+  radarr:
+    image: linuxserver/radarr:latest
+    restart: always
+    environment:
+      TZ: "Europe/Amsterdam"
+    #   PGID: 50
+    #   PUID: 1000
+    # labels:
+    #   - traefik.backend=radarr
+    #   - traefik.frontend.rule=Host:radarr.josverheij.nl
+    #   - traefik.docker.network=proxy
+    #   - traefik.port=7878
+    # networks:
+    #   - internal
+    #   - proxy
+    volumes:
+      - radarr:/config
+      - ${DOWNLOAD_DIR}/complete:/downloads
+      - /Volumes/SamsungS2/movies:/movies

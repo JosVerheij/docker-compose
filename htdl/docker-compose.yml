@@ -27,7 +27,7 @@ services:
     #   - internal
     #   - proxy
     volumes:
-      - ${PWD}/transmission:/config
+      - ${CONFIG_DIR}/transmission:/config
       - ${DOWNLOAD_DIR}:/downloads
 
   jackett:
@@ -44,7 +44,7 @@ services:
     #   - internal
     #   - proxy
     volumes:
-      - ${PWD}/jackett:/config
+      - ${CONFIG_DIR}/jackett:/config
 
   sonarr:
     image: linuxserver/sonarr:latest

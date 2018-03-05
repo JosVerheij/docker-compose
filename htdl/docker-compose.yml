@@ -64,7 +64,7 @@ services:
     volumes:
       - sonarr:/config
       - ${DOWNLOAD_DIR}/complete:/downloads
-      - /Volumes/SamsungS2/tv:/tv
+      - ${VIDEO_DIR}/tv:/tv
 
   radarr:
     image: linuxserver/radarr:latest
@@ -84,4 +84,4 @@ services:
     volumes:
       - radarr:/config
       - ${DOWNLOAD_DIR}/complete:/downloads
-      - /Volumes/SamsungS2/movies:/movies
+      - ${VIDEO_DIR}/movies:/movies

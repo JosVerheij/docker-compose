@@ -18,19 +18,23 @@ services:
   hass:
     image: homeassistant/home-assistant:latest
     restart: always
+    env_file: hass.env
+    environment:
+      - TZ="Europe/Amsterdam"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${HOME}/projects/home-assistant:/config
+      - ${HASS_CONFIG}:/config
+    ports:
+      - 8123:8123
     networks:
       - internal
-      - proxy
-    labels:
-      - traefik.backend=hass
-      - traefik.frontend.rule=Host:hass.josverheij.nl
-      - traefik.docker.network=proxy
-      - traefik.port=8123
+    #   - proxy
+    # labels:
+    #   - traefik.backend=hass
+    #   - traefik.frontend.rule=Host:hass.josverheij.nl
+    #   - traefik.docker.network=proxy
+    #   - traefik.port=8123
     devices:
-      - /dev/ttyUSB0:/dev/zwave:rwm
+      - ${ZWAVE_DEVICE}:/dev/zwave:rwm
     depends_on:
       - db
 

@@ -13,6 +13,24 @@ volumes:
     driver: local
 
 services:
+  transmission:
+    image: linuxserver/transmission:latest
+    restart: always
+    environment:
+      TZ: "Europe/Amsterdam"
+    ports:
+      - 9091:9091
+    # labels:
+    #   - traefik.backend=transmission
+    #   - traefik.frontend.rule=Host:transmission.josverheij.nl
+    #   - traefik.docker.network=proxy
+    #   - traefik.port=9091
+    # networks:
+    #   - internal
+    #   - proxy
+    volumes:
+      - ${CONFIG_DIR}/transmission:/config
+      - ${VIDEO_DIR}:/video
 
   jackett:
     image: linuxserver/jackett:latest
@@ -51,8 +69,7 @@ services:
     #   - proxy
     volumes:
       - sonarr:/config
-      - ${DOWNLOAD_DIR}/complete:/downloads
-      - ${VIDEO_DIR}/tv:/tv
+      - ${VIDEO_DIR}:/video
 
   radarr:
     image: linuxserver/radarr:latest
@@ -73,5 +90,4 @@ services:
     #   - proxy
     volumes:
       - radarr:/config
-      - ${DOWNLOAD_DIR}/complete:/downloads
-      - ${VIDEO_DIR}/movies:/movies
+      - ${VIDEO_DIR}:/video

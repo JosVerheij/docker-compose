@@ -13,24 +13,19 @@ volumes:
     driver: local
 
 services:
-  transmission:
-    image: linuxserver/transmission:latest
-    restart: always
-    environment:
-      TZ: "Europe/Amsterdam"
-    ports:
-      - 9091:9091
-    # labels:
-    #   - traefik.backend=transmission
-    #   - traefik.frontend.rule=Host:transmission.josverheij.nl
-    #   - traefik.docker.network=proxy
-    #   - traefik.port=9091
-    # networks:
-    #   - internal
-    #   - proxy
-    volumes:
-      - ${CONFIG_DIR}/transmission:/config
-      - ${VIDEO_DIR}:/video
+  # transmission:
+  #   image: linuxserver/transmission:latest
+  #   restart: always
+  #   environment:
+  #     TZ: "Europe/Amsterdam"
+  #   ports:
+  #     - 9091:9091
+  #   networks:
+  #     - internal
+  #     - proxy
+  #   volumes:
+  #     - ${CONFIG_DIR}/transmission:/config
+  #     - ${VIDEO_DIR}:/video
 
   jackett:
     image: linuxserver/jackett:latest
@@ -39,11 +34,6 @@ services:
       TZ: "Europe/Amsterdam"
     ports:
       - 9117:9117
-    # labels:
-    #   - traefik.backend=jackett
-    #   - traefik.frontend.rule=Host:jackett.josverheij.nl
-    #   - traefik.docker.network=proxy
-    #   - traefik.port=9117
     # networks:
     #   - internal
     #   - proxy
@@ -57,18 +47,13 @@ services:
       - 8989:8989
     environment:
       TZ: "Europe/Amsterdam"
-    #   PGID: 50
-    #   PUID: 1000
-    # labels:
-    #   - traefik.backend=sonarr
-    #   - traefik.frontend.rule=Host:sonarr.josverheij.nl
-    #   - traefik.docker.network=proxy
-    #   - traefik.port=8989
+      PGID: ${PGID}
+      PUID: ${PUID}
     # networks:
     #   - internal
     #   - proxy
     volumes:
-      - sonarr:/config
+      - ${CONFIG_DIR}/sonarr:/config
       - ${VIDEO_DIR}:/video
 
   radarr:
@@ -76,18 +61,13 @@ services:
     restart: always
     environment:
       TZ: "Europe/Amsterdam"
+      PGID: ${PGID}
+      PUID: ${PUID}
     ports:
       - 7878:7878
-    #   PGID: 50
-    #   PUID: 1000
-    # labels:
-    #   - traefik.backend=radarr
-    #   - traefik.frontend.rule=Host:radarr.josverheij.nl
-    #   - traefik.docker.network=proxy
-    #   - traefik.port=7878
     # networks:
     #   - internal
     #   - proxy
     volumes:
-      - radarr:/config
+      - ${CONFIG_DIR}/radarr:/config
       - ${VIDEO_DIR}:/video

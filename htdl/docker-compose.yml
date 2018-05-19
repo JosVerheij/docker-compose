@@ -12,8 +12,12 @@ services:
     restart: always
     environment:
       TZ: "Europe/Amsterdam"
+      PGID: ${PGID}
+      PUID: ${PUID}
     ports:
       - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
     volumes:
       - ./transmission:/config
       - ${VIDEO_DIR}:/video

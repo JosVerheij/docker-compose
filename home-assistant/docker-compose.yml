@@ -1,10 +1,10 @@
 version: '3'
 
-# networks:
-#   proxy:
-#     external: true
-#   internal:
-#     external: false
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
 
 services:
   db:
@@ -24,14 +24,14 @@ services:
       - ${HASS_CONFIG}:/config
     ports:
       - 8123:8123
-    # networks:
-    #   - internal
-    #   - proxy
-    # labels:
-    #   - traefik.backend=hass
-    #   - traefik.frontend.rule=Host:hass.josverheij.nl
-    #   - traefik.docker.network=proxy
-    #   - traefik.port=8123
+    networks:
+      - internal
+      - proxy
+    labels:
+      - traefik.backend=hass
+      - traefik.frontend.rule=Host:josverheij.synology.me;PathPrefixStrip:/hass
+      - traefik.docker.network=proxy
+      - traefik.port=8123
     devices:
       - ${ZWAVE_DEVICE}:/dev/zwave:rwm
     depends_on:

@@ -10,8 +10,8 @@ services:
   db:
     image: postgres:alpine
     restart: always
-    # networks:
-    #   - internal
+    networks:
+      - internal
     volumes:
       - dbhassvol:/var/lib/postgresql/data
 
@@ -28,8 +28,9 @@ services:
       - internal
       - proxy
     labels:
+      - traefik.enable=true
       - traefik.backend=hass
-      - traefik.frontend.rule=Host:josverheij.synology.me;PathPrefixStrip:/hass
+      - traefik.frontend.rule=Host:josverheij.synology.me
       - traefik.docker.network=proxy
       - traefik.port=8123
     devices:

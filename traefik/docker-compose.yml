@@ -16,9 +16,9 @@ services:
       - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${PWD}/traefik.toml:/etc/traefik/traefik.toml
-      - ${PWD}/acme.json:/acme.json
-      - ${PWD}/rules:/rules
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - ./acme.json:/acme.json
+      - ./rules:/rules
     # env_file:
     #   - traefik.env
     networks:

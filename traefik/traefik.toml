@@ -215,14 +215,15 @@ swarmmode = false
 ################################################################
 # ACME (Letsencrypt settings)
 ################################################################
-[acme]
-email = "web.acme@josverheij.nl"
-storage = "acme.json"
-entryPoint = "https"
-onHostRule = true
-onDemand = false
-[acme.httpChallenge]
-  entryPoint = "http"
+# [acme]
+# email = "web.acme@josverheij.nl"
+# storage = "acme.json"
+# entryPoint = "https"
+# onHostRule = true
+# onDemand = false
+# [acme.tlsChallenge]
+# [acme.httpChallenge]
+#   entryPoint = "http"
 #[acme.dnsChallenge]
 #  provider = "cloudflare"
 #  delayBeforeCheck = 0

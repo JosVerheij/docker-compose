@@ -11,8 +11,8 @@ services:
     image: traefik:alpine
     restart: always
     ports:
-      - 8088:80
-      - 8443:443
+      - 18088:80
+      - 18443:443
       - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro

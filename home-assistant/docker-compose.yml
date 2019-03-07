@@ -7,7 +7,6 @@ networks:
     external: false
 
 services:
-
   hass:
     image: homeassistant/home-assistant:latest
     restart: always
@@ -23,7 +22,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.backend=hass
-      - traefik.frontend.rule=Host:josverheij.synology.me
+      - traefik.frontend.rule=Host:josverheij.synology.me;PathPrefix:/hass
       - traefik.docker.network=proxy
       - traefik.port=8123
     devices:

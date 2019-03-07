@@ -7,13 +7,6 @@ networks:
     external: false
 
 services:
-  db:
-    image: postgres:alpine
-    restart: always
-    networks:
-      - internal
-    volumes:
-      - dbhassvol:/var/lib/postgresql/data
 
   hass:
     image: homeassistant/home-assistant:latest
@@ -35,9 +28,3 @@ services:
       - traefik.port=8123
     devices:
       - ${ZWAVE_DEVICE}:/dev/zwave:rwm
-    depends_on:
-      - db
-
-volumes:
-  dbhassvol:
-    driver: local

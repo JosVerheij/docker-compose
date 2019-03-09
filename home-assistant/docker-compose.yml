@@ -16,9 +16,8 @@ services:
       - ${HASS_CONFIG}:/config
     ports:
       - 8123:8123
-    networks:
-      - internal
-      - proxy
+      - 51828:51828
+    network_mode: bridge
     labels:
       - traefik.enable=true
       - traefik.backend=hass
